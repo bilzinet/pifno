@@ -236,7 +236,7 @@ fig.legend(handles=[l1, l2], ncol=2,
            labels=['Train', 'Test'],
            loc='upper center', frameon=False,
            fontsize=14, borderaxespad=-0.2)
-fig.savefig('./expt_inputconditions.pdf',
+fig.savefig('./expt_inputconditions.png',
             bbox_inches='tight', pad_inches=0, dpi=300)
 
 
@@ -325,7 +325,7 @@ ax2.text(2.75,3.30,r'Test $\rightarrow$', c='k', alpha=1.0, fontsize=10)
 # ax2.legend(fontsize=10)
 
 fig.suptitle('(a) Forward problem', fontsize=14)
-fig.savefig('./res_outofsample_forward.pdf',
+fig.savefig('./res_outofsample_forward.png',
             bbox_inches='tight', pad_inches=0, dpi=300)
 
 
@@ -396,7 +396,7 @@ ax2.text(2.75,3.30,r'Test $\rightarrow$', c='k', alpha=1.0, fontsize=10)
 # ax2.legend(fontsize=10)
 
 fig.suptitle('(b) Inverse problem', fontsize=14)
-fig.savefig('./res_outofsample_inverse.pdf',
+fig.savefig('./res_outofsample_inverse.png',
             bbox_inches='tight', pad_inches=0, dpi=300)
 
 
@@ -491,7 +491,7 @@ t_max_arr.append(600)
 K_maps_arr = tuple(K_maps_arr)
 t_max_arr = np.array(t_max_arr)/3600
 fig, ax = plot_hmap_solutions(K_maps_arr, idx_arr=sams_arr, show_cbar=True, show_inps=True, t_max_arr=t_max_arr)
-fig.savefig('./res_sample_preds.pdf',
+fig.savefig('./res_sample_preds.png',
             bbox_inches='tight', pad_inches=0, dpi=300)
 
 
@@ -535,7 +535,7 @@ for k in range(3):
     axs[1,k].set_xlim([300,600])
     axs[0,k].set_ylim([70,100])
     axs[1,k].set_ylim([70,100])
-fig.savefig('./res_tsec1.pdf',
+fig.savefig('./res_tsec1.png',
             bbox_inches='tight', pad_inches=0, dpi=300)
 
 
@@ -573,7 +573,7 @@ for k in range(3):
     axs[1,k].set_xlim([300,600])
     axs[0,k].set_ylim([30,90])
     axs[1,k].set_ylim([30,90])
-fig.savefig('./res_tsec2.pdf',
+fig.savefig('./res_tsec2.png',
             bbox_inches='tight', pad_inches=0, dpi=300)
 
 # =============================================================================
