@@ -1,2 +1,6 @@
 
 mlps2022/
+models/forward_kcomp_results-fno.npy
+models/forward_kcomp_results-pifno.npy
+models/inverse_kcomp_results-fno.npy
+models/inverse_kcomp_results-pifno.npy
