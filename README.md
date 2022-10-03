@@ -3,4 +3,4 @@
 Physics Informed Fourier Neural Operator
 
 
-![Sample result](/testing/res_sample_preds.pdf)
+![Sample result](testing/res_sample_preds.pdf)
