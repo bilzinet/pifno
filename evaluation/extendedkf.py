@@ -322,3 +322,94 @@ def EKF_algorithm(U_true, U_meas, N=600):
         u_kprev = u_k
         P_kprev = P_k
     return U_est
+
+
+# %%
+# =============================================================================
+# Configuration
+# =============================================================================
+
+# fundamental diagram params
+v_free = 60.
+k_jam = 120.
+q_max = v_free*k_jam/4
+k_cr = k_jam/2
+
+# discretization params
+x_len = 1000
+t_start = 0
+t_end = 600
+t_len = t_end - t_start
+delx = 20 / 1000
+delt = 1 / 3600
+cfl_limit = v_free * (delt / delx)
+M = np.floor((x_len / 1000) / delx).astype(int)  # number of space discretizations
+N = np.floor((t_len / 3600) / delt).astype(int)  # number of time discretizations
+
+print('\n Domain parameters:')
+print(f'\tLength of road section: {x_len} m')
+print(f'\tTime period of simulation: {t_len} sec')
+print(f'\tDiscretization size: {delx*1000} m x {delt*3600} sec')
+print(f'\tDiscretization shape: ({M} x {N})')
+print(f'\tCFL limit: {cfl_limit:0.03f}')
+if cfl_limit <= 1.0:
+    print('\tCFL condition satisfied!')
+else:
+    print('\tCFL condition not satisfied! Revise discretization ...')
+    
+
+
+# %%
+# =============================================================================
+# EKF for inverse problem: simulated data
+# =============================================================================
+
+# load true density and measurements matrix
+datafold = '../data/train/'
+filenames = ['test_data-part1', 'test_data-part2']
+(U_true_sams, U_meas_sams) = load_data(filenames, datafold, num_samples=100, num_trajectories=10)
+
+# perform estimation
+sample = 0
+U_true, U_meas = U_true_sams[sample], U_meas_sams[sample]
+k_entry = U_true[:,0]
+k_exit = U_true[:,-1]
+U_est = EKF_algorithm(U_true, U_meas, N=600)
+
+# visualize
+plt.figure()
+plt.imshow(U_true[0:,:].T, origin='lower', cmap='jet_r', aspect='auto')
+plt.figure()
+plt.imshow(U_est[0:,:].T, origin='lower', cmap='jet_r', aspect='auto')
+
+
+# %%
+# =============================================================================
+# EKF computational time comparison
+# =============================================================================
+
+def EKF_timewrapper(samples=100):
+    global k_entry
+    global k_exit
+    time_arr = []
+    for sample in range(samples):
+        U_true, U_meas = U_true_sams[sample], U_meas_sams[sample]
+        k_entry = U_true[:,0]
+        k_exit = U_true[:,-1]
+        starttime = timeit.default_timer()
+        U_est = EKF_algorithm(U_true, U_meas, N=600)
+        endtime = timeit.default_timer()
+        computetime = endtime-starttime
+        time_arr.append(computetime)
+    return np.array(time_arr)
+
+# load true density and measurements matrix
+datafold = '../data/train/'
+filenames = ['test_data-part1', 'test_data-part2']
+(U_true_sams, U_meas_sams) = load_data(filenames, datafold, num_samples=100, num_trajectories=100)
+
+# run time comparison
+samples = 10
+compute_times = EKF_timewrapper(samples)
+print(f'Average computational time for {samples} samples is : {compute_times.mean():0.03f} +- {compute_times.std():0.03f} secs')
+
